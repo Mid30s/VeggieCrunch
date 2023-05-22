@@ -1,9 +1,6 @@
 const { Schema, model } = require("mongoose");
 const bcrypt = require("bcrypt");
 
-// import schema from Order.js
-const orderSchema = require("./Order");
-
 const userSchema = new Schema(
   {
     username: {
@@ -41,7 +38,12 @@ const userSchema = new Schema(
       type: String,
       trim: true,
     },
-    orders: [orderSchema],
+    orders: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Order",
+      },
+    ],
   },
   {
     toJSON: {

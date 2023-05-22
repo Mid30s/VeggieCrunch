@@ -48,7 +48,7 @@ const resolvers = {
 
         return user;
       }
-      throw new AuthenticationError("Not logged in");
+      throw new AuthenticationError("Customer user not logged in");
     },
 
     orders: async (parent, args, context) => {
