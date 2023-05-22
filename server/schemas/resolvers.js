@@ -33,7 +33,7 @@ const resolvers = {
       if (context.user && context.user.role === "admin") {
         return await User.find({});
       } else {
-        throw new AuthenticationError("Not authorized");
+        throw new AuthenticationError("Admin Only!Not authorized");
       }
     },
 

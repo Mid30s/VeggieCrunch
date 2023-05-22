@@ -1,0 +1,25 @@
+[
+    {
+      "_id": "60d6c72fbab9340022da2a18",
+      "name": "Carrot",
+      "description": "Crunchy and sweet root vegetable.",
+      "image": "carrot.jpg",
+      "price": 2.99,
+      "quantity": 100,
+      "category": "60d6c6cfbab9340022da2a16",
+      "inStock": true,
+      "organic": true
+    },
+    {
+      "_id": "60d6c72fbab9340022da2a19",
+      "name": "Spinach",
+      "description": "Versatile leafy green vegetable.",
+      "image": "spinach.jpg",
+      "price": 1.99,
+      "quantity": 80,
+      "category": "60d6c6cfbab9340022da2a17",
+      "inStock": true,
+      "organic": true
+    }
+  ]
+  
