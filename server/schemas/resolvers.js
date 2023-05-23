@@ -198,20 +198,6 @@ const resolvers = {
       return updatedProduct;
     },
 
-    // addOrder mutation
-    addOrder: async (parent, args, context) => {
-      if (!context.user) {
-        throw new AuthenticationError("User not logged in");
-      }
-
-      // assuming `args.products` is an array of product ids
-      const newOrder = await Order.create({
-        products: args.products.map((id) => ({ product: id, quantity: 1 })),
-      });
-
-      return newOrder;
-    },
-
     // update product quantity
     decrementProductQuantity: async (parent, { _id, quantity }) => {
       const decrement = Math.abs(quantity) * -1;
@@ -220,6 +206,82 @@ const resolvers = {
         { $inc: { quantity: decrement } },
         { new: true }
       );
+    },
+
+    addOrder: async (parent, { products }, context) => {
+      // Check if user is authenticated
+      if (!context.user) {
+        throw new AuthenticationError("You need to be logged in!");
+      }
+
+      // Create a new order
+      const order = new Order({
+        products,
+        userId: context.user._id,
+        purchaseDate: new Date(),
+      });
+
+      // Save the order to the database
+      const savedOrder = await order.save();
+
+      // Populate the product details
+      await Order.populate(savedOrder, { path: "products.product" });
+
+      // Return the order
+      return savedOrder;
+    },
+
+    deleteProduct: async (parent, { _id }, context) => {
+      if (context.user && context.user.role === "admin") {
+        return await Product.findByIdAndDelete(_id);
+      } else {
+        throw new AuthenticationError("Not authorized");
+      }
+    },
+
+    updateOrder: async (parent, { _id, products, status }, context) => {
+      // Check if user is authenticated
+      if (!context.user) {
+        throw new AuthenticationError("You need to be logged in!");
+      }
+
+      // Check if user has the right role (optional)
+      if (context.user.role !== "admin") {
+        throw new AuthenticationError("You don't have permission to do this!");
+      }
+
+      // Find order and update it
+      const updatedOrder = await Order.findByIdAndUpdate(
+        _id,
+        { products, status },
+        { new: true }
+      ).populate("products.product");
+
+      // Return the updated order
+      return updatedOrder;
+    },
+
+    cancelOrder: async (parent, { _id }, context) => {
+      if (context.user) {
+        const order = await Order.findById(_id);
+        if (!order) {
+          throw new Error("Order not found");
+        }
+
+        const orderTime = new Date(order.purchaseDate);
+        const currentTime = new Date();
+        const timeDifference = currentTime - orderTime;
+
+        // 2 hours in milliseconds
+        if (timeDifference <= 2 * 60 * 60 * 1000) {
+          await Order.findByIdAndDelete(_id);
+          return { success: true, message: "Order cancelled" };
+        } else {
+          throw new Error("Order can't be cancelled after 2 hours");
+        }
+      } else {
+        throw new AuthenticationError("Not authorized");
+      }
     },
   },
 };

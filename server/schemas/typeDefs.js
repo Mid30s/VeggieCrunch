@@ -100,9 +100,10 @@ const typeDefs = gql`
     ): Product
 
     decrementProductQuantity(_id: ID!, quantity: Int!): Product
+    deleteProduct(_id: ID!): Product
     addOrder(products: [ProductOrderInput]!): Order
-
-    updateOrder(_id: ID!, products: [ID], status: String): Order
+    updateOrder(_id: ID!, products: [ProductOrderInput], status: String): Order
+    cancelOrder(_id: ID!): Order
   }
 `;
 
