@@ -1,37 +1,53 @@
-import React from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import Button from 'react-bootstrap/Button';
-import Container from 'react-bootstrap/Container';
+import React from "react";
+import { AppBar, Toolbar, Typography, Link, Box } from "@mui/material";
+import { makeStyles } from "@mui/styles";
+import { useTheme } from "@mui/material/styles";
 
-const Footer = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
+const useStyles = makeStyles(() => {
+  const theme = useTheme();
+
+  return {
+    appBar: {
+      top: "auto",
+      bottom: 0,
+      background: "#fff",
+    },
+    grow: {
+      flexGrow: 1,
+    },
+    link: {
+      margin: theme.spacing(1),
+    },
+  };
+});
+
+function Footer() {
+  const classes = useStyles();
+
   return (
-    <footer className="w-100 mt-auto bg-light p-2 position-absolute bottom-0">
-      <Container className="container text-center mb-2">
-        {location.pathname !== '/' && (
-          <Button
-            variant='dark'
-            className="mb-3"
-            onClick={() => navigate(-1)}
-          >
-            &larr; Go Back
-          </Button>
-        )}
-        <h4>
-          Made with{' '}
-          <span
-            className="emoji"
-            role="img"
-            aria-label="heart"
-            aria-hidden="false"
-          >
-            ❤️
-          </span>
-        </h4>
-      </Container>
-    </footer>
+    <AppBar position="fixed" color="primary" className={classes.appBar}>
+      <Toolbar>
+        <Box display={{ xs: "none", md: "flex" }} flexGrow={1}>
+          <Link href="#" color="inherit" className={classes.link}>
+            About us
+          </Link>
+          <Link href="#" color="inherit" className={classes.link}>
+            Contact
+          </Link>
+          <Link href="#" color="inherit" className={classes.link}>
+            Blog
+          </Link>
+        </Box>
+        <Typography className={classes.grow} />
+        <Box display={{ xs: "none", md: "flex" }}>
+          <Typography variant="body2" color="textSecondary" align="center">
+            {"© "}
+            Veggie Crunch {new Date().getFullYear()}
+          </Typography>
+        </Box>
+      </Toolbar>
+    </AppBar>
   );
-};
+}
 
 export default Footer;
