@@ -44,7 +44,10 @@ const resolvers = {
     user: async (parent, args, context) => {
       if (context.user) {
         const user = await User.findById(context.user._id).populate({
-          path: "orders.products.product",
+          path: "orders",
+          populate: {
+            path: "products.product",
+          },
         });
 
         user.orders.sort((a, b) => b.purchaseDate - a.purchaseDate);
@@ -227,6 +230,14 @@ const resolvers = {
       // Populate the product details
       await Order.populate(savedOrder, { path: "products.product" });
 
+      // Link the order to the user
+      const user = await User.findById(context.user._id);
+      if (!user) {
+        throw new Error("User not found");
+      }
+      user.orders.push(savedOrder);
+      await user.save();
+
       // Return the order
       return savedOrder;
     },
@@ -273,7 +284,7 @@ const resolvers = {
         const timeDifference = currentTime - orderTime;
 
         // 2 hours in milliseconds
-        if (timeDifference <= 2 * 60 * 1000) {
+        if (timeDifference <= 2 * 60 * 60 * 1000) {
           await Order.findByIdAndDelete(_id);
           return { success: true, message: "Order cancelled" };
         } else {
