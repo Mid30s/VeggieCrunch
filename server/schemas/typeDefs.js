@@ -50,9 +50,9 @@ const typeDefs = gql`
     users: [User]
     user(id: ID!): User
     products: [Product]
-    product(id: ID!): Product
+    product(_id: ID!): Product
     orders: [Order]
-    order(id: ID!): Order
+    order(_id: ID!): Order
     checkout(products: [ID]!): Checkout
   }
 
@@ -60,7 +60,6 @@ const typeDefs = gql`
     addUser(username: String!, email: String!, password: String!): Auth
     login(email: String!, password: String!): Auth
     updateUser(
-      id: ID!
       username: String
       email: String
       password: String
@@ -79,7 +78,7 @@ const typeDefs = gql`
       organic: Boolean
     ): Product
     updateProduct(
-      id: ID!
+      _id: ID!
       name: String
       description: String
       image: String
@@ -90,7 +89,7 @@ const typeDefs = gql`
       organic: Boolean
     ): Product
     addOrder(products: [ID]!): Order
-    updateOrder(id: ID!, products: [ID], status: String): Order
+    updateOrder(_id: ID!, products: [ID], status: String): Order
   }
 `;
 

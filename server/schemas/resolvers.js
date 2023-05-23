@@ -26,14 +26,19 @@ const resolvers = {
     },
 
     product: async (parent, { _id }) => {
-      return await Product.findById(_id).populate("category");
+      try {
+        console.log(`_id: ${_id}`);
+        return await Product.findById(_id).populate("category");
+      } catch (error) {
+        console.log("Error:", error);
+      }
     },
 
     users: async (parent, args, context) => {
       if (context.user && context.user.role === "admin") {
         return await User.find({});
       } else {
-        throw new AuthenticationError("Admin Only!Not authorized");
+        throw new AuthenticationError("Admin user Only!Not authorized");
       }
     },
 
@@ -54,12 +59,12 @@ const resolvers = {
     orders: async (parent, args, context) => {
       // If the user is an admin, return all orders.
       if (context.user && context.user.role === "admin") {
-        return await Order.find({}).populate("products");
+        return await Order.find({}).populate("products.product");
       }
       // If the user is not an admin but is logged in, return their orders.
       else if (context.user && context.user.role === "user") {
         return await Order.find({ userId: context.user._id }).populate(
-          "products"
+          "products.product"
         );
       } else {
         throw new AuthenticationError("Not logged in");
