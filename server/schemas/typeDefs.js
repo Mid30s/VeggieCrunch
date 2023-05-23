@@ -50,6 +50,11 @@ const typeDefs = gql`
     user: User
   }
 
+  input ProductOrderInput {
+    product: ID!
+    quantity: Int!
+  }
+
   type Query {
     categories: [Category]
     users: [User]
@@ -93,7 +98,8 @@ const typeDefs = gql`
       inStock: Boolean
       organic: Boolean
     ): Product
-    addOrder(products: [ID]!): Order
+    addOrder(products: [ProductOrderInput]!): Order
+
     updateOrder(_id: ID!, products: [ID], status: String): Order
   }
 `;

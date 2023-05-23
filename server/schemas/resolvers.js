@@ -44,8 +44,7 @@ const resolvers = {
     user: async (parent, args, context) => {
       if (context.user) {
         const user = await User.findById(context.user._id).populate({
-          path: "orders.products",
-          populate: "category",
+          path: "orders.products.product",
         });
 
         user.orders.sort((a, b) => b.purchaseDate - a.purchaseDate);
@@ -134,6 +133,17 @@ const resolvers = {
       const token = signToken(user);
       return { token, user };
     },
+
+    updateUser: async (parent, args, context) => {
+      if (context.user) {
+        return await User.findByIdAndUpdate(context.user._id, args, {
+          new: true,
+        });
+      }
+
+      throw new AuthenticationError("Not logged in");
+    },
+
     login: async (parent, { email, password }) => {
       const user = await User.findOne({ email });
 
@@ -150,6 +160,28 @@ const resolvers = {
       const token = signToken(user);
 
       return { token, user };
+    },
+
+    addProduct: async (parent, args, context) => {
+      if (!context.user || context.user.role !== "admin") {
+        throw new AuthenticationError(
+          "You are not authorized to do this action, Admin Only!"
+        );
+      }
+
+      const newProduct = await Product.create(args);
+
+      return newProduct;
+    },
+
+    updateProduct: async (parent, { _id, quantity }) => {
+      const decrement = Math.abs(quantity) * -1;
+
+      return await Product.findByIdAndUpdate(
+        _id,
+        { $inc: { quantity: decrement } },
+        { new: true }
+      );
     },
   },
 };
