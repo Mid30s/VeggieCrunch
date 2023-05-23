@@ -55,6 +55,11 @@ const typeDefs = gql`
     quantity: Int!
   }
 
+  type CancelOrderResponse {
+    success: Boolean
+    message: String
+  }
+
   type Query {
     categories: [Category]
     users: [User]
@@ -103,7 +108,7 @@ const typeDefs = gql`
     deleteProduct(_id: ID!): Product
     addOrder(products: [ProductOrderInput]!): Order
     updateOrder(_id: ID!, products: [ProductOrderInput], status: String): Order
-    cancelOrder(_id: ID!): Order
+    cancelOrder(_id: ID!): CancelOrderResponse
   }
 `;
 

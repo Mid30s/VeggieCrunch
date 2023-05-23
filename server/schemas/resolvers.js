@@ -273,7 +273,7 @@ const resolvers = {
         const timeDifference = currentTime - orderTime;
 
         // 2 hours in milliseconds
-        if (timeDifference <= 2 * 60 * 60 * 1000) {
+        if (timeDifference <= 2 * 60 * 1000) {
           await Order.findByIdAndDelete(_id);
           return { success: true, message: "Order cancelled" };
         } else {
