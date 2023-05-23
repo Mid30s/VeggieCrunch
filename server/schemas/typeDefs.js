@@ -98,6 +98,8 @@ const typeDefs = gql`
       inStock: Boolean
       organic: Boolean
     ): Product
+
+    decrementProductQuantity(_id: ID!, quantity: Int!): Product
     addOrder(products: [ProductOrderInput]!): Order
 
     updateOrder(_id: ID!, products: [ID], status: String): Order

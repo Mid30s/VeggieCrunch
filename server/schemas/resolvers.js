@@ -179,9 +179,42 @@ const resolvers = {
       return newProduct;
     },
 
-    updateProduct: async (parent, { _id, quantity }) => {
-      const decrement = Math.abs(quantity) * -1;
+    // updateProduct mutation
+    updateProduct: async (parent, args, context) => {
+      if (context.user.role !== "admin") {
+        throw new AuthenticationError("Not authorized as admin");
+      }
 
+      const updatedProduct = await Product.findByIdAndUpdate(
+        args._id,
+        { ...args },
+        { new: true }
+      );
+
+      if (!updatedProduct) {
+        throw new UserInputError("Failed to update product");
+      }
+
+      return updatedProduct;
+    },
+
+    // addOrder mutation
+    addOrder: async (parent, args, context) => {
+      if (!context.user) {
+        throw new AuthenticationError("User not logged in");
+      }
+
+      // assuming `args.products` is an array of product ids
+      const newOrder = await Order.create({
+        products: args.products.map((id) => ({ product: id, quantity: 1 })),
+      });
+
+      return newOrder;
+    },
+
+    // update product quantity
+    decrementProductQuantity: async (parent, { _id, quantity }) => {
+      const decrement = Math.abs(quantity) * -1;
       return await Product.findByIdAndUpdate(
         _id,
         { $inc: { quantity: decrement } },
