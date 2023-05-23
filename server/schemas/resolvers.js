@@ -27,7 +27,6 @@ const resolvers = {
 
     product: async (parent, { _id }) => {
       try {
-        console.log(`_id: ${_id}`);
         return await Product.findById(_id).populate("category");
       } catch (error) {
         console.log("Error:", error);
@@ -73,7 +72,7 @@ const resolvers = {
 
     order: async (parent, { _id }, context) => {
       // Find the order by id
-      const order = await Order.findById(_id).populate("products");
+      const order = await Order.findById(_id).populate("products.product");
 
       // If the order does not exist, throw an error.
       if (!order) {

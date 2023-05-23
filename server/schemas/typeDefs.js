@@ -18,10 +18,15 @@ const typeDefs = gql`
     organic: Boolean
   }
 
+  type ProductOrder {
+    product: Product
+    quantity: Int
+  }
+
   type Order {
     _id: ID
     purchaseDate: String
-    products: [Product]
+    products: [ProductOrder]
     status: String
   }
 
