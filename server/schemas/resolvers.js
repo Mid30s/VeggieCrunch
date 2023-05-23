@@ -169,7 +169,12 @@ const resolvers = {
         );
       }
 
-      const newProduct = await Product.create(args);
+      const newProduct = await Product.create({
+        name: args.name,
+        price: args.price,
+        quantity: args.quantity,
+        category: args.categoryId,
+      });
 
       return newProduct;
     },
