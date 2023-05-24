@@ -2,8 +2,23 @@ import decode from "jwt-decode";
 
 class AuthService {
   getProfile() {
-    const decodedToken = decode(this.getToken());
-    return decodedToken.name || decodedToken.username || "User";
+    const token = this.getToken(); // replace with how you get the token
+    if (token) {
+      try {
+        const decodedToken = decode(token);
+        if (
+          decodedToken.data &&
+          (decodedToken.data.role || decodedToken.data.username)
+        ) {
+          return decodedToken.data;
+        }
+      } catch (error) {
+        console.error("Invalid or expired token", error);
+        // handle the error, e.g. by logging out the user or showing an error message
+      }
+    }
+    // If the token does not contain a 'role' or 'username', return a default object
+    return { role: "User", username: "User" };
   }
 
   loggedIn() {

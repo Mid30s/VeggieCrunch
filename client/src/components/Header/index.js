@@ -19,6 +19,16 @@ const pages = ["Home", "Products", "Blog", "About"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 function ResponsiveAppBar() {
+  const [profile, setProfile] = React.useState({}); // initially profile is an empty object
+
+  React.useEffect(() => {
+    try {
+      setProfile(AuthService.getProfile()); // update profile once the component has mounted
+    } catch (error) {
+      console.error("An error occurred:", error);
+    }
+  }, []);
+
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -44,6 +54,32 @@ function ResponsiveAppBar() {
     AuthService.logout(); // Call your AuthService's logout function
     navigate("/login"); // Redirect to login page
     handleCloseUserMenu(); // Close the user menu
+  };
+
+  const handleNavigate = (page) => {
+    if (page === "Home") {
+      navigate("/");
+    } else {
+      navigate(`/${page.toLowerCase()}`);
+    }
+    handleCloseNavMenu();
+  };
+
+  const handleSettings = (setting) => {
+    console.log(`Handling setting: ${setting}`);
+    console.log(`Profile role: ${profile.role}`);
+
+    // Add logic to handle each setting button
+    if (setting === "Logout") {
+      handleLogout();
+    } else if (setting === "Dashboard") {
+      console.log(`Navigating to: /${profile.role.toLowerCase()}/dashboard`); // profile.role is either "user" or "admin"
+      navigate(`/${profile.role.toLowerCase()}/dashboard`);
+    } else {
+      console.log(`Navigating to: /${setting.toLowerCase()}`);
+      navigate(`/${setting.toLowerCase()}`);
+    }
+    handleCloseUserMenu();
   };
 
   // eslint-disable-next-line no-unused-vars
@@ -120,18 +156,18 @@ function ResponsiveAppBar() {
               flexGrow: 1,
               fontFamily: "monospace",
               fontWeight: 700,
-              letterSpacing: ".3rem",
+              letterSpacing: ".01rem",
               color: "inherit",
               textDecoration: "none",
             }}
           >
-            LOGO
+            VeggieCrunch
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
               <Button
                 key={page}
-                onClick={handleCloseNavMenu}
+                onClick={() => handleNavigate(page)}
                 sx={{ my: 2, color: "white", display: "block" }}
               >
                 {page}
@@ -140,12 +176,13 @@ function ResponsiveAppBar() {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
+            {/* add logic to display the user menu if the user is logged in */}
             {isLoggedIn ? (
               <>
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                     <Avatar
-                      alt={AuthService.getProfile()}
+                      alt={profile.role}
                       src="/static/images/avatar/2.jpg"
                     />
                   </IconButton>
@@ -169,11 +206,7 @@ function ResponsiveAppBar() {
                   {settings.map((setting) => (
                     <MenuItem
                       key={setting}
-                      onClick={
-                        setting === "Logout"
-                          ? handleLogout
-                          : handleCloseUserMenu
-                      }
+                      onClick={() => handleSettings(setting)}
                     >
                       <Typography textAlign="center">{setting}</Typography>
                     </MenuItem>
