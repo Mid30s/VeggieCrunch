@@ -15,7 +15,7 @@ import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import AuthService from "../../utils/auth"; // Import your AuthService
 
-const pages = ["Products", "Pricing", "Blog"];
+const pages = ["Home", "Products", "Blog", "About"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 function ResponsiveAppBar() {
@@ -64,12 +64,12 @@ function ResponsiveAppBar() {
               display: { xs: "none", md: "flex" },
               fontFamily: "monospace",
               fontWeight: 700,
-              letterSpacing: ".3rem",
+              letterSpacing: ".01rem",
               color: "inherit",
               textDecoration: "none",
             }}
           >
-            LOGO
+            VeggieCrunch
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
