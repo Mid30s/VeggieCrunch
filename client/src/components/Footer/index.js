@@ -21,7 +21,7 @@ const useStyles = makeStyles(() => {
     appBar: {
       top: "auto",
       bottom: 0,
-      background: "#333",
+      background: "#4CAF50",
       padding: theme.spacing(2),
     },
     grow: {

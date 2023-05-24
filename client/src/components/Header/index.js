@@ -86,7 +86,7 @@ function ResponsiveAppBar() {
   const [isLoggedIn, setIsLoggedIn] = React.useState(AuthService.loggedIn());
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" sx={{ backgroundColor: "#4CAF50" }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
