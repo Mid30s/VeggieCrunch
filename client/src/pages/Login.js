@@ -61,17 +61,18 @@ const Login = () => {
           sx={{
             display: { xs: "none", md: "block" },
             width: { sm: "100%", md: "45%" },
-            mb: { xs: 3, md: 0 },
+            mb: { xs: 10, md: 10 },
           }}
         >
           <img
             src={process.env.PUBLIC_URL + "/images/welcome.jpg"}
             alt="Welcome to our site"
             style={{
-              width: "60%",
+              width: "58%",
               height: "auto",
               borderRadius: "20px",
               marginLeft: "15%",
+              marginBottom: "5%",
             }}
           />
         </Box>
