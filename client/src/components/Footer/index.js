@@ -21,7 +21,8 @@ const useStyles = makeStyles(() => {
     appBar: {
       top: "auto",
       bottom: 0,
-      background: "#4CAF50",
+      backgroundColor: "#DCE35B",
+      background: "linear-gradient(to right, #45B649, #DCE35B)",
       padding: theme.spacing(2),
     },
     grow: {

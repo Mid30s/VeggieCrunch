@@ -86,7 +86,13 @@ function ResponsiveAppBar() {
   const [isLoggedIn, setIsLoggedIn] = React.useState(AuthService.loggedIn());
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: "#4CAF50" }}>
+    <AppBar
+      position="static"
+      sx={{
+        backgroundColor: "#DCE35B",
+        background: "linear-gradient(to right,  #DCE35B,#45B649)",
+      }}
+    >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
@@ -182,7 +188,7 @@ function ResponsiveAppBar() {
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                     <Avatar
-                      alt={profile.role}
+                      alt={profile.username}
                       src="/static/images/avatar/2.jpg"
                     />
                   </IconButton>

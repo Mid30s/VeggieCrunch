@@ -2,12 +2,9 @@ import React, { useState } from "react";
 import { useMutation } from "@apollo/client";
 import { LOGIN_USER } from "../utils/mutations";
 import Auth from "../utils/auth";
-
-// Material UI Components
+import LoginForm from "../components/LoginForm";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
 
@@ -15,7 +12,6 @@ const Login = () => {
   const [formState, setFormState] = useState({ email: "", password: "" });
   const [login, { error }] = useMutation(LOGIN_USER);
 
-  // update state based on form input changes
   const handleChange = (event) => {
     const { name, value } = event.target;
 
@@ -25,7 +21,6 @@ const Login = () => {
     });
   };
 
-  // submit form
   const handleFormSubmit = async (event) => {
     event.preventDefault();
     console.log(formState);
@@ -39,7 +34,6 @@ const Login = () => {
       console.error(e);
     }
 
-    // clear form values
     setFormState({
       email: "",
       password: "",
@@ -47,64 +41,59 @@ const Login = () => {
   };
 
   return (
-    <Container component="main" maxWidth="xs">
+    <Container
+      component="main"
+      maxWidth="false"
+      sx={{ p: 0, m: 0, pl: { sm: 0 }, pr: { sm: 0 } }}
+    >
       <Box
         sx={{
-          marginTop: 8,
           display: "flex",
-          flexDirection: "column",
+          flexDirection: { xs: "column", md: "row" },
           alignItems: "center",
+          justifyContent: "space-evenly",
+          backgroundColor: "#C3E1D9",
+          height: "100vh",
+          p: { xs: 1, sm: 2, md: 3, lg: 4 },
         }}
       >
         <Box
-          component="form"
-          noValidate
-          onSubmit={handleFormSubmit}
-          sx={{ width: "100%", mt: 1 }}
+          sx={{
+            display: { xs: "none", md: "block" },
+            width: { sm: "100%", md: "45%" },
+            mb: { xs: 3, md: 0 },
+          }}
         >
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            autoFocus
-            onChange={handleChange}
-            value={formState.email}
+          <img
+            src={process.env.PUBLIC_URL + "/images/welcome.jpg"}
+            alt="Welcome to our site"
+            style={{
+              width: "60%",
+              height: "auto",
+              borderRadius: "20px",
+              marginLeft: "15%",
+            }}
           />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-            onChange={handleChange}
-            value={formState.password}
-          />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            sx={{ mt: 3, mb: 2 }}
-          >
-            Sign In
-          </Button>
         </Box>
 
-        {error && (
-          <Alert severity="error">
-            <AlertTitle>Error</AlertTitle>
-            {error.message}
-          </Alert>
-        )}
+        <Box
+          sx={{
+            width: { sm: "100%", md: "50%" },
+            mb: { xs: 3, md: 0 },
+          }}
+        >
+          <LoginForm
+            handleChange={handleChange}
+            handleFormSubmit={handleFormSubmit}
+            formState={formState}
+          />
+          {error && (
+            <Alert severity="error">
+              <AlertTitle>Error</AlertTitle>
+              {error.message}
+            </Alert>
+          )}
+        </Box>
       </Box>
     </Container>
   );
