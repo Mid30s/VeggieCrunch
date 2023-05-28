@@ -63,7 +63,7 @@ const typeDefs = gql`
   type Query {
     categories: [Category]
     users: [User]
-    user(id: ID!): User
+    user(_id: ID!): User
     products: [Product]
     product(_id: ID!): Product
     orders: [Order]

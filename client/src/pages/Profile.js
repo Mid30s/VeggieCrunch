@@ -1,48 +1,42 @@
-import React from 'react';
-import { Navigate, useParams } from 'react-router-dom';
-import { useQuery } from '@apollo/client';
-import Card from 'react-bootstrap/Card';
-import ListGroup from 'react-bootstrap/ListGroup';
-
-import { QUERY_USER, QUERY_ME } from '../utils/queries';
-
-import Auth from '../utils/auth';
+import React, { useEffect, useState } from "react";
+import { useQuery } from "@apollo/client";
+import { GET_USER } from "../utils/queries";
+import Auth from "../utils/auth";
 
 const Profile = () => {
-  const { username: userParam } = useParams();
+  const [userId, setUserId] = useState(null);
 
-  const { loading, data } = useQuery(userParam ? QUERY_USER : QUERY_ME, {
-    variables: { username: userParam },
+  useEffect(() => {
+    const loggedInUser = Auth.getProfile();
+    if (loggedInUser) {
+      setUserId(loggedInUser._id);
+      console.log("Logged in user:", loggedInUser); // log the entire user data
+    }
+  }, []);
+
+  const { loading, error, data } = useQuery(GET_USER, {
+    variables: { userId },
+    skip: !userId, // skip the query if userId is not set yet
   });
 
-  const user = data?.me || data?.user || {};
-  // navigate to personal profile page if username is yours
-  if (Auth.loggedIn() && Auth.getProfile().data.username === userParam) {
-    return <Navigate to="/me" />;
-  }
+  console.log("Loading:", loading);
+  console.log("Error:", error);
+  console.log("Data:", data);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (!user?.username) {
-    return (
-      <h4>
-        You need to be logged in to see this. Use the navigation links above to
-        sign up or log in!
-      </h4>
-    );
-  }
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
+  if (!data?.user) return <p>No user found</p>;
 
   return (
-    <Card style={{ width: '20rem' }}>
-      <Card.Header>User Details</Card.Header>
-      <ListGroup variant="flush">
-        <ListGroup.Item>Id: {user._id}</ListGroup.Item>
-        <ListGroup.Item>Email: {user.email}</ListGroup.Item>
-        <ListGroup.Item>Username: {user.username}</ListGroup.Item>
-      </ListGroup>
-    </Card>
+    <div>
+      <h1>Profile</h1>
+      <h2>{data.user.username}'s Profile</h2>
+      <p>Email: {data.user.email}</p>
+      <p>Role: {data.user.role}</p>
+      <p>Full Name: {data.user.fullName}</p>
+      <p>Address: {data.user.address}</p>
+      <p>Phone: {data.user.phone}</p>
+    </div>
   );
 };
 
