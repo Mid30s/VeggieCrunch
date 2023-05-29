@@ -189,12 +189,17 @@ function ResponsiveAppBar() {
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                     <Avatar
                       alt={profile.username}
-                      src="/static/images/avatar/2.jpg"
+                      src="images/avatar.png"
+                      sx={{
+                        width: 50,
+                        height: 50,
+                        border: "2px solid #ffffff",
+                      }}
                     />
                   </IconButton>
                 </Tooltip>
                 <Menu
-                  sx={{ mt: "45px" }}
+                  sx={{ mt: "45px", width: "200px" }}
                   id="menu-appbar"
                   anchorEl={anchorElUser}
                   anchorOrigin={{

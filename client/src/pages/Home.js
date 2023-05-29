@@ -1,7 +1,14 @@
 import React from "react";
 import { Box, Typography, Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
+  const navigate = useNavigate();
+
+  const handleExplore = () => {
+    navigate("/products");
+  };
+
   return (
     <Box
       sx={{
@@ -19,12 +26,17 @@ const HomePage = () => {
       }}
     >
       <Typography variant="h3" gutterBottom>
-        Welcome to our website
+        The best place to buy fresh veggies
       </Typography>
+
       <Typography variant="h5" gutterBottom>
-        Explore our awesome features and services
+        Explore our awesome products and services
       </Typography>
-      <Button variant="contained" color="primary">
+      <Button
+        variant="contained"
+        sx={{ backgroundColor: "#7E5A44" }}
+        onClick={handleExplore}
+      >
         Explore
       </Button>
     </Box>
