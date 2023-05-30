@@ -14,6 +14,14 @@ function CategoryMenu({ selectedCategory, onSelectCategory }) {
 
   return (
     <List component="nav" aria-label="product categories">
+      <ListItem>
+        <ListItemButton
+          selected={!selectedCategory}
+          onClick={() => onSelectCategory(null)}
+        >
+          <ListItemText primary="All Products" />
+        </ListItemButton>
+      </ListItem>
       {categoryData.categories.map(({ id, name }) => (
         <ListItem key={id}>
           <ListItemButton

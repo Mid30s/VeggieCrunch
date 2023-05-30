@@ -40,6 +40,7 @@ function ProductList({ selectedCategory, onSelectProduct }) {
     }
   }, [productsData, selectedCategory]);
 
+  //add loading spinner
   if (loading)
     return (
       <Box
