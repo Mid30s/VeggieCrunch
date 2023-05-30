@@ -61,3 +61,23 @@ export const QUERY_PRODUCTS = gql`
     }
   }
 `;
+
+//fetch a single product
+export const QUERY_PRODUCT = gql`
+  query getProduct($id: ID!) {
+    product(_id: $id) {
+      _id
+      name
+      description
+      image
+      price
+      quantity
+      category {
+        _id
+        name
+      }
+      inStock
+      organic
+    }
+  }
+`;

@@ -16,6 +16,7 @@ import Contact from "./pages/Contact";
 import Profile from "./pages/Profile";
 import Products from "./pages/Products";
 import Blog from "./pages/Blog";
+import SingleProduct from "./pages/singleProduct";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
@@ -62,6 +63,7 @@ function App() {
               <Route path="/contact" element={<Contact />} />
               <Route path="/products" element={<Products />} />
               <Route path="/blog" element={<Blog />} />
+              <Route path="/product/:id" element={<SingleProduct />} />
             </Routes>
           </div>
           <Footer />
