@@ -9,22 +9,13 @@ import { QUERY_CATEGORIES } from "../../utils/queries";
 import { idbPromise } from "../../utils/helpers";
 
 function CategoryMenu() {
-  console.log("Rendering CategoryMenu");
   const [state, dispatch] = useStoreContext();
 
-  const { categories = [] } = state;
+  const { categories } = state;
 
-  const { loading, error, data: categoryData } = useQuery(QUERY_CATEGORIES);
-  if (error) {
-    console.error("Error fetching categories", error);
-    console.log("Error:", error.message);
-  }
+  const { loading, data: categoryData } = useQuery(QUERY_CATEGORIES);
 
   useEffect(() => {
-    console.log("Inside useEffect");
-    console.log("categoryData:", categoryData);
-    console.log("loading:", loading);
-
     if (categoryData) {
       dispatch({
         type: UPDATE_CATEGORIES,
@@ -53,20 +44,16 @@ function CategoryMenu() {
   return (
     <div>
       <h2>Choose a Category:</h2>
-      {categories?.length > 0 &&
-        categories.map((item) => {
-          console.log("Rendering button for category:", item.name);
-          return (
-            <button
-              key={item._id}
-              onClick={() => {
-                handleClick(item._id);
-              }}
-            >
-              {item.name}
-            </button>
-          );
-        })}
+      {categories.map((item) => (
+        <button
+          key={item._id}
+          onClick={() => {
+            handleClick(item._id);
+          }}
+        >
+          {item.name}
+        </button>
+      ))}
     </div>
   );
 }
