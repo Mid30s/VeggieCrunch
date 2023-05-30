@@ -2,7 +2,7 @@ import React from "react";
 
 import CategoryMenu from "../components/CategoryMenu";
 import ProductList from "../components/ProductList";
-// import Cart from "../components/Cart";
+import Cart from "../components/Cart";
 import { Container, Grid, Box } from "@mui/material";
 
 const Products = () => {
@@ -31,8 +31,18 @@ const Products = () => {
           </Grid>
           <Grid item xs={12} sm={10}>
             <Box sx={{ position: "relative" }}>
-              {/* <Cart /> */}
               <ProductList />
+            </Box>
+
+            <Box
+              sx={{
+                position: "absolute",
+                top: 60,
+                right: 10,
+                zIndex: 9999, // On top of other elements
+              }}
+            >
+              <Cart />
             </Box>
           </Grid>
         </Grid>
