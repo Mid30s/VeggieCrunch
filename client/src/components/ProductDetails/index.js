@@ -28,7 +28,7 @@ const ProductDetails = ({ product }) => (
           Category: {product.category.name}
         </Typography>
         <Typography variant="body1" color="text.secondary" gutterBottom>
-          In Stock: {product.inStock ? "✅" : "❌"}
+          In Stock: {product.inStock ? "Yes" : "No"}
         </Typography>
         <Typography variant="body1" color="text.secondary" gutterBottom>
           Organic: {product.organic ? "✅" : "❌"}
