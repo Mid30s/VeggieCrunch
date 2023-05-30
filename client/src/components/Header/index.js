@@ -52,7 +52,7 @@ function ResponsiveAppBar() {
 
   const handleLogout = () => {
     AuthService.logout(); // Call your AuthService's logout function
-    navigate("/login"); // Redirect to login page
+    navigate("/"); // Redirect to login page
     handleCloseUserMenu(); // Close the user menu
   };
 

@@ -20,6 +20,149 @@
       "category": "60d6c6cfbab9340022da2a17",
       "inStock": true,
       "organic": true
+    },
+    {
+      "_id": "60d6c72fbab9340022da2a20",
+      "name": "Potato",
+      "description": "Starchy root vegetable.",
+      "image": "potato.jpg",
+      "price": 0.99,
+      "quantity": 200,
+      "category": "60d6c6cfbab9340022da2a16",
+      "inStock": true,
+      "organic": false
+    },
+    {
+      "_id": "60d6c72fbab9340022da2a21",
+      "name": "Lettuce",
+      "description": "Crunchy leafy green vegetable.",
+      "image": "lettuce.jpg",
+      "price": 1.29,
+      "quantity": 150,
+      "category": "60d6c6cfbab9340022da2a17",
+      "inStock": true,
+      "organic": true
+    },
+    {
+      "_id": "60d6c72fbab9340022da2a22",
+      "name": "Tomato",
+      "description": "Juicy fruit vegetable.",
+      "image": "tomato.jpg",
+      "price": 2.49,
+      "quantity": 120,
+      "category": "70d6c6cfbab9340022da2a18",
+      "inStock": true,
+      "organic": false
+    },
+    {
+      "_id": "60d6c72fbab9340022da2a23",
+      "name": "Cucumber",
+      "description": "Refreshing fruit vegetable.",
+      "image": "cucumber.jpg",
+      "price": 1.99,
+      "quantity": 100,
+      "category": "70d6c6cfbab9340022da2a18",
+      "inStock": true,
+      "organic": true
+    },
+    {
+      "_id": "60d6c72fbab9340022da2a24",
+      "name": "Peas",
+      "description": "Sweet seed vegetable.",
+      "image": "peas.jpg",
+      "price": 2.99,
+      "quantity": 90,
+      "category": "70d6c6cfbab9340022da2a19",
+      "inStock": true,
+      "organic": false
+    },
+    {
+      "_id": "60d6c72fbab9340022da2a25",
+      "name": "Corn",
+      "description": "Starchy seed vegetable.",
+      "image": "corn.jpg",
+      "price": 3.49,
+      "quantity": 80,
+      "category": "70d6c6cfbab9340022da2a19",
+      "inStock": true,
+      "organic": true
+    },
+    {
+      "_id": "60d6c72fbab9340022da2a26",
+      "name": "Asparagus",
+      "description": "Earthy shoot vegetable.",
+      "image": "asparagus.jpg",
+      "price": 3.99,
+      "quantity": 70,
+      "category": "70d6c6cfbab9340022da2a20",
+      "inStock": true,
+      "organic": true
+    },
+    {
+      "_id": "60d6c72fbab9340022da2a27",
+      "name": "Bamboo Shoot",
+      "description": "Crunchy shoot vegetable.",
+      "image": "bamboo_shoot.jpg",
+      "price": 4.99,
+      "quantity": 60,
+      "category": "70d6c6cfbab9340022da2a20",
+      "inStock": true,
+      "organic": false
+    },
+    {
+      "_id": "60d6c72fbab9340022da2a28",
+      "name": "Beetroot",
+      "description": "Sweet and earthy root vegetable.",
+      "image": "beetroot.jpg",
+      "price": 1.49,
+      "quantity": 100,
+      "category": "60d6c6cfbab9340022da2a16",
+      "inStock": true,
+      "organic": true
+    },
+    {
+      "_id": "60d6c72fbab9340022da2a29",
+      "name": "Cabbage",
+      "description": "Versatile leafy green vegetable.",
+      "image": "cabbage.jpg",
+      "price": 1.79,
+      "quantity": 90,
+      "category": "60d6c6cfbab9340022da2a17",
+      "inStock": true,
+      "organic": false
+    },
+    {
+      "_id": "60d6c72fbab9340022da2a30",
+      "name": "Pumpkin",
+      "description": "Sweet fruit vegetable.",
+      "image": "pumpkin.jpg",
+      "price": 3.99,
+      "quantity": 50,
+      "category": "70d6c6cfbab9340022da2a18",
+      "inStock": true,
+      "organic": true
+    },
+    {
+      "_id": "60d6c72fbab9340022da2a31",
+      "name": "Beans",
+      "description": "Protein-rich seed vegetable.",
+      "image": "beans.jpg",
+      "price": 2.49,
+      "quantity": 100,
+      "category": "70d6c6cfbab9340022da2a19",
+      "inStock": true,
+      "organic": false
+    },
+    {
+      "_id": "60d6c72fbab9340022da2a32",
+      "name": "Brussel Sprout",
+      "description": "Small leafy green vegetable.",
+      "image": "brussel_sprout.jpg",
+      "price": 2.99,
+      "quantity": 70,
+      "category": "60d6c6cfbab9340022da2a17",
+      "inStock": true,
+      "organic": true
     }
   ]
   

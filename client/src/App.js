@@ -14,6 +14,7 @@ import Login from "./pages/Login";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Profile from "./pages/Profile";
+import Products from "./pages/Products";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
@@ -58,6 +59,7 @@ function App() {
               <Route path="/profile" element={<Profile />} />
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
+              <Route path="/products" element={<Products />} />
             </Routes>
           </div>
           <Footer />

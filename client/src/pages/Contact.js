@@ -22,7 +22,7 @@ const ContactPage = () => {
         m: 0,
         pl: { sm: 0 },
         pr: { sm: 0 },
-        bgcolor: "#C3E1D9",
+        background: "linear-gradient(to right, #dad299, #b0dab9)",
         height: "100vh",
       }}
     >
@@ -36,7 +36,7 @@ const ContactPage = () => {
         <Grid container spacing={4}>
           <Grid item xs={12} md={6}>
             {/* Left section with office and farm contact details */}
-            <Typography variant="h4" gutterBottom>
+            <Typography variant="h4" gutterBottom sx={{ fontWeight: "bold" }}>
               Contact Details
             </Typography>
             <Typography variant="body1" gutterBottom>
@@ -55,7 +55,7 @@ const ContactPage = () => {
 
           <Grid item xs={12} md={6}>
             {/* Right section with contact us form */}
-            <Typography variant="h4" gutterBottom>
+            <Typography variant="h4" gutterBottom sx={{ fontWeight: "bold" }}>
               Contact Us
             </Typography>
             <Typography variant="h6" gutterBottom>
@@ -96,7 +96,7 @@ const ContactPage = () => {
                     name="message"
                   />
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={12} container justifyContent="center">
                   <Button type="submit" variant="contained" color="primary">
                     Submit
                   </Button>

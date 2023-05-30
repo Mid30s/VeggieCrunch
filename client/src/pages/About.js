@@ -10,7 +10,7 @@ const AboutUs = () => {
         m: 0,
         pl: { sm: 0 },
         pr: { sm: 0 },
-        bgcolor: "#C3E1D9",
+        background: "linear-gradient(to right, #dad299, #b0dab9)",
         height: "100vh",
       }}
     >

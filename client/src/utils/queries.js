@@ -33,3 +33,12 @@ export const GET_USER = gql`
     }
   }
 `;
+
+export const QUERY_CATEGORIES = gql`
+  {
+    categories {
+      _id
+      name
+    }
+  }
+`;

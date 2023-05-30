@@ -52,7 +52,7 @@ const Login = () => {
           flexDirection: { xs: "column", md: "row" },
           alignItems: "center",
           justifyContent: "space-evenly",
-          backgroundColor: "#C3E1D9",
+          background: "linear-gradient(to right, #dad299, #b0dab9)",
           height: "100vh",
           p: { xs: 1, sm: 2, md: 3, lg: 4 },
         }}

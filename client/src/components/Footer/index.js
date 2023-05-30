@@ -55,7 +55,12 @@ function Footer() {
       <Toolbar>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={4}>
-            <Typography variant="h6" gutterBottom className={classes.text}>
+            <Typography
+              variant="h6"
+              gutterBottom
+              className={classes.text}
+              sx={{ marginLeft: 1 }}
+            >
               Quick Links
             </Typography>
             <Link href="/" className={classes.link}>
@@ -72,7 +77,12 @@ function Footer() {
             </Link>
           </Grid>
           <Grid item xs={12} sm={4}>
-            <Typography variant="h6" gutterBottom className={classes.text}>
+            <Typography
+              variant="h6"
+              gutterBottom
+              className={classes.text}
+              sx={{ marginLeft: 2 }}
+            >
               Follow Us
             </Typography>
             <IconButton
