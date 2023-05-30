@@ -51,7 +51,7 @@ function Footer() {
   const classes = useStyles();
 
   return (
-    <AppBar position="fixed" className={classes.appBar}>
+    <AppBar position="relative" className={classes.appBar}>
       <Toolbar>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={4}>
