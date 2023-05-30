@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import CategoryMenu from "../components/CategoryMenu";
 import ProductList from "../components/ProductList";
@@ -6,6 +6,11 @@ import Cart from "../components/Cart";
 import { Container, Grid, Box } from "@mui/material";
 
 const Products = () => {
+  const [selectedCategory, setSelectedCategory] = useState(null);
+
+  const handleSelectCategory = (category) => {
+    setSelectedCategory(category);
+  };
   return (
     <Container
       maxWidth="false"
@@ -27,11 +32,14 @@ const Products = () => {
       >
         <Grid container spacing={3}>
           <Grid item xs={12} sm={2}>
-            <CategoryMenu />
+            <CategoryMenu
+              onSelectCategory={handleSelectCategory}
+              selectedCategory={selectedCategory}
+            />
           </Grid>
           <Grid item xs={12} sm={10}>
             <Box sx={{ position: "relative" }}>
-              <ProductList />
+              <ProductList selectedCategory={selectedCategory} />
             </Box>
 
             <Box

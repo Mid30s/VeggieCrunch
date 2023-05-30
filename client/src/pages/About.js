@@ -2,6 +2,21 @@ import React from "react";
 import { Typography, Container, Grid, Box, Avatar } from "@mui/material";
 
 const AboutUs = () => {
+  const partnerships = [
+    {
+      logo: "/images/foodland.png",
+      description: "Foodland",
+    },
+    {
+      logo: "/images/coles.png",
+      description: "Coles",
+    },
+    {
+      logo: "/images/woolworths.png",
+      description: "Woolworths",
+    },
+  ];
+
   return (
     <Container
       maxWidth="false"
@@ -22,7 +37,7 @@ const AboutUs = () => {
         }}
       >
         <Typography
-          variant="h3"
+          variant="h4"
           align="center"
           color="textPrimary"
           gutterBottom
@@ -55,7 +70,7 @@ const AboutUs = () => {
             >
               <Avatar
                 alt="John Doe"
-                src="images/avatar.png"
+                src="/images/avatar.png"
                 sx={{ width: 100, height: 100 }}
               />
               <Typography variant="h5" color="textPrimary">
@@ -76,7 +91,7 @@ const AboutUs = () => {
             >
               <Avatar
                 alt="Jane Doe"
-                src="images/avatar.png"
+                src="/images/avatar.png"
                 sx={{ width: 100, height: 100 }}
               />
               <Typography variant="h5" color="textPrimary">
@@ -97,8 +112,8 @@ const AboutUs = () => {
             >
               <Avatar
                 alt="Joe Doe"
-                src="images/avatar.png"
-                sx={{ width: 100, height: 100 }}
+                src="/images/avatar.png"
+                sx={{ width: 100, height: "auto" }}
               />
               <Typography variant="h5" color="textPrimary">
                 Joe Doe
@@ -108,6 +123,43 @@ const AboutUs = () => {
               </Typography>
             </Box>
           </Grid>
+        </Grid>
+
+        <Typography
+          variant="h4"
+          align="center"
+          color="textPrimary"
+          gutterBottom
+          sx={{ mt: 5 }}
+        >
+          Partnerships
+        </Typography>
+        <Grid container spacing={4} justifyContent="center">
+          {partnerships.map((partnership, index) => (
+            <Grid item key={index}>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
+              >
+                <Avatar
+                  alt={`Partner ${index + 1}`}
+                  src={partnership.logo}
+                  sx={{ width: 120, height: 120, marginLeft: 10 }}
+                />
+                <Typography
+                  variant="subtitle1"
+                  color="textPrimary"
+                  align="center"
+                  sx={{ marginLeft: 10, marginTop: 2 }}
+                >
+                  {partnership.description}
+                </Typography>
+              </Box>
+            </Grid>
+          ))}
         </Grid>
       </Box>
     </Container>

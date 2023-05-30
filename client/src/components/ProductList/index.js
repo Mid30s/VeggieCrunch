@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+
 import { Link } from "react-router-dom";
 
 import { useQuery } from "@apollo/client";
@@ -12,9 +13,10 @@ import {
   Button,
   Box,
   Pagination,
+  CircularProgress,
 } from "@mui/material";
 
-function ProductList({ onSelectProduct }) {
+function ProductList({ selectedCategory, onSelectProduct }) {
   const { loading, error, data: productsData } = useQuery(QUERY_PRODUCTS);
 
   const [page, setPage] = useState(1);
@@ -22,7 +24,33 @@ function ProductList({ onSelectProduct }) {
 
   console.log("Products data:", productsData);
 
-  if (loading) return "Loading...";
+  const [filteredProducts, setFilteredProducts] = useState([]);
+
+  useEffect(() => {
+    if (productsData) {
+      if (selectedCategory) {
+        setFilteredProducts(
+          productsData.products.filter((product) =>
+            product.category.name === selectedCategory ? true : false
+          )
+        );
+      } else {
+        setFilteredProducts(productsData.products);
+      }
+    }
+  }, [productsData, selectedCategory]);
+
+  if (loading)
+    return (
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        height="100vh"
+      >
+        <CircularProgress />
+      </Box>
+    );
   if (error) return `Error! ${error.message}`;
 
   // Pagination logic
@@ -31,7 +59,7 @@ function ProductList({ onSelectProduct }) {
   };
 
   const startIndex = (page - 1) * itemsPerPage;
-  const selectedProducts = productsData.products.slice(
+  const selectedProducts = filteredProducts.slice(
     startIndex,
     startIndex + itemsPerPage
   );
@@ -88,7 +116,7 @@ function ProductList({ onSelectProduct }) {
       </Grid>
       <Box display="flex" justifyContent="center" mt={2}>
         <Pagination
-          count={Math.ceil(productsData.products.length / itemsPerPage)}
+          count={Math.ceil(filteredProducts.length / itemsPerPage)}
           page={page}
           onChange={handlePageChange}
           variant="outlined"
