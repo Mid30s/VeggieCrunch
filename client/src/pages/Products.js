@@ -1,9 +1,9 @@
 import React from "react";
 
 import CategoryMenu from "../components/CategoryMenu";
-// import ProductList from "../components/ProductList";
+import ProductList from "../components/ProductList";
 // import Cart from "../components/Cart";
-import { Container, Box } from "@mui/material";
+import { Container, Grid, Box } from "@mui/material";
 
 const Products = () => {
   return (
@@ -25,9 +25,17 @@ const Products = () => {
           marginTop: "2%",
         }}
       >
-        <CategoryMenu />
-        {/* <ProductList /> */}
-        {/* <Cart /> */}
+        <Grid container spacing={3}>
+          <Grid item xs={12} sm={2}>
+            <CategoryMenu />
+          </Grid>
+          <Grid item xs={12} sm={10}>
+            <Box sx={{ position: "relative" }}>
+              {/* <Cart /> */}
+              <ProductList />
+            </Box>
+          </Grid>
+        </Grid>
       </Box>
     </Container>
   );

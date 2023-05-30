@@ -42,3 +42,22 @@ export const QUERY_CATEGORIES = gql`
     }
   }
 `;
+
+export const QUERY_PRODUCTS = gql`
+  query getProducts($category: ID) {
+    products(category: $category) {
+      _id
+      name
+      description
+      image
+      price
+      quantity
+      category {
+        _id
+        name
+      }
+      inStock
+      organic
+    }
+  }
+`;

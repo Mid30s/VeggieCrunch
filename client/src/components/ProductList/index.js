@@ -1,69 +1,48 @@
-import React, { useEffect } from "react";
-import ProductItem from "../ProductItem";
-import { useStoreContext } from "../../utils/GlobalState";
-import { UPDATE_PRODUCTS } from "../../utils/actions";
+import React, { useState } from "react";
+
 import { useQuery } from "@apollo/client";
 import { QUERY_PRODUCTS } from "../../utils/queries";
-import { idbPromise } from "../../utils/helpers";
-import spinner from "../../assets/spinner.gif";
+import {
+  Grid,
+  Card,
+  CardContent,
+  Typography,
+  CardMedia,
+  Button,
+  Pagination,
+} from "@mui/material";
 
-function ProductList() {
-  const [state, dispatch] = useStoreContext();
+function ProductList({ onSelectProduct }) {
+  const { loading, error, data: productsData } = useQuery(QUERY_PRODUCTS);
 
-  const { currentCategory } = state;
+  console.log("Products data:", productsData);
 
-  const { loading, data } = useQuery(QUERY_PRODUCTS);
-
-  useEffect(() => {
-    if (data) {
-      dispatch({
-        type: UPDATE_PRODUCTS,
-        products: data.products,
-      });
-      data.products.forEach((product) => {
-        idbPromise("products", "put", product);
-      });
-    } else if (!loading) {
-      idbPromise("products", "get").then((products) => {
-        dispatch({
-          type: UPDATE_PRODUCTS,
-          products: products,
-        });
-      });
-    }
-  }, [data, loading, dispatch]);
-
-  function filterProducts() {
-    if (!currentCategory) {
-      return state.products;
-    }
-
-    return state.products.filter(
-      (product) => product.category._id === currentCategory
-    );
-  }
+  if (loading) return "Loading...";
+  if (error) return `Error! ${error.message}`;
 
   return (
-    <div className="my-2">
-      <h2>Our Products:</h2>
-      {state.products.length ? (
-        <div className="flex-row">
-          {filterProducts().map((product) => (
-            <ProductItem
-              key={product._id}
-              _id={product._id}
+    <Grid container spacing={2}>
+      {productsData.products.map((product) => (
+        <Grid item key={product._id} xs={12} sm={6} md={4}>
+          <Card onClick={() => onSelectProduct(product._id)}>
+            <CardMedia
+              component="img"
+              height="140"
               image={product.image}
-              name={product.name}
-              price={product.price}
-              quantity={product.quantity}
+              alt={product.name}
             />
-          ))}
-        </div>
-      ) : (
-        <h3>You haven't added any products yet!</h3>
-      )}
-      {loading ? <img src={spinner} alt="loading" /> : null}
-    </div>
+            <CardContent>
+              <Typography variant="h5" component="div">
+                {product.name}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                ${product.price.toFixed(2)}
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+      ))}
+    </Grid>
   );
 }
 

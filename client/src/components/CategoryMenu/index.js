@@ -1,60 +1,30 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useQuery } from "@apollo/client";
-import { useStoreContext } from "../../utils/GlobalState";
-import {
-  UPDATE_CATEGORIES,
-  UPDATE_CURRENT_CATEGORY,
-} from "../../utils/actions";
+
 import { QUERY_CATEGORIES } from "../../utils/queries";
-import { idbPromise } from "../../utils/helpers";
 
-function CategoryMenu() {
-  const [state, dispatch] = useStoreContext();
+import { List, ListItem, ListItemButton, ListItemText } from "@mui/material";
 
-  const { categories } = state;
+function CategoryMenu({ selectedCategory, onSelectCategory }) {
+  const { loading, error, data: categoryData } = useQuery(QUERY_CATEGORIES);
+  console.log("Category data:", categoryData);
 
-  const { loading, data: categoryData } = useQuery(QUERY_CATEGORIES);
-
-  useEffect(() => {
-    if (categoryData) {
-      dispatch({
-        type: UPDATE_CATEGORIES,
-        categories: categoryData.categories,
-      });
-      categoryData.categories.forEach((category) => {
-        idbPromise("categories", "put", category);
-      });
-    } else if (!loading) {
-      idbPromise("categories", "get").then((categories) => {
-        dispatch({
-          type: UPDATE_CATEGORIES,
-          categories: categories,
-        });
-      });
-    }
-  }, [categoryData, loading, dispatch]);
-
-  const handleClick = (id) => {
-    dispatch({
-      type: UPDATE_CURRENT_CATEGORY,
-      currentCategory: id,
-    });
-  };
+  if (loading) return "Loading...";
+  if (error) return `Error! ${error.message}`;
 
   return (
-    <div>
-      <h2>Choose a Category:</h2>
-      {categories.map((item) => (
-        <button
-          key={item._id}
-          onClick={() => {
-            handleClick(item._id);
-          }}
-        >
-          {item.name}
-        </button>
+    <List component="nav" aria-label="product categories">
+      {categoryData.categories.map(({ id, name }) => (
+        <ListItem key={id}>
+          <ListItemButton
+            selected={selectedCategory === name}
+            onClick={() => onSelectCategory(name)}
+          >
+            <ListItemText primary={name} />
+          </ListItemButton>
+        </ListItem>
       ))}
-    </div>
+    </List>
   );
 }
 
