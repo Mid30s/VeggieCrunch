@@ -1,64 +1,103 @@
-import React, { useEffect } from "react";
-import { Typography, Button } from "@mui/material";
-import { CheckCircleOutline as CheckCircleIcon } from "@mui/icons-material";
-import { Rating } from "@mui/lab";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
 import { useMutation } from "@apollo/client";
-import { ADD_ORDER } from "../utils/mutations";
+import { LOGIN_USER } from "../utils/mutations";
+import Auth from "../utils/auth";
+import LoginForm from "../components/LoginForm";
+import Container from "@mui/material/Container";
+import Box from "@mui/material/Box";
+import Alert from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
 
-const PaymentSuccessPage = ({ products }) => {
-  const navigate = useNavigate();
+const Login = () => {
+  const [formState, setFormState] = useState({ email: "", password: "" });
+  const [login, { error }] = useMutation(LOGIN_USER);
 
-  // useMutation hook returns a tuple that includes:
-  // - addOrder: Mutation function that we call to execute the mutation
-  // - data: If the mutation has been executed, this will contain the result
-  // - loading: Will be true while the mutation is in progress
-  // - error: Will contain any error that occurred when executing the mutation
-  const [addOrder, { data, loading, error }] = useMutation(ADD_ORDER);
+  const handleChange = (event) => {
+    const { name, value } = event.target;
 
-  useEffect(() => {
-    if (products && products.length > 0) {
-      try {
-        // Execute the mutation, passing the products as a variable
-        addOrder({ variables: { products } });
-      } catch (error) {
-        console.error("Error adding order:", error);
-      }
+    setFormState({
+      ...formState,
+      [name]: value,
+    });
+  };
+
+  const handleFormSubmit = async (event) => {
+    event.preventDefault();
+    console.log(formState);
+    try {
+      const { data } = await login({
+        variables: { ...formState },
+      });
+
+      Auth.login(data.login.token);
+    } catch (e) {
+      console.error(e);
     }
-  }, [products, addOrder]);
+
+    setFormState({
+      email: "",
+      password: "",
+    });
+  };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        height: "100vh",
-      }}
+    <Container
+      component="main"
+      maxWidth="false"
+      sx={{ p: 0, m: 0, pl: { sm: 0 }, pr: { sm: 0 } }}
     >
-      <CheckCircleIcon style={{ fontSize: 80, color: "#4caf50" }} />
-      <Typography variant="h3" gutterBottom>
-        Payment Successful!
-      </Typography>
-      <Rating
-        name="read-only"
-        value={5}
-        readOnly
-        size="large"
-        style={{ color: "#ff9800" }}
-      />
-      <Typography variant="h6">Thank you for your purchase.</Typography>
-      <Button
-        variant="contained"
-        color="primary"
-        style={{ marginTop: "20px" }}
-        onClick={() => navigate("/products")}
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: { xs: "column", md: "row" },
+          alignItems: "center",
+          justifyContent: "space-evenly",
+          background: "linear-gradient(to right, #dad299, #b0dab9)",
+          height: "100vh",
+          p: { xs: 1, sm: 2, md: 3, lg: 4 },
+        }}
       >
-        Continue Shopping
-      </Button>
-    </div>
+        <Box
+          sx={{
+            display: { xs: "none", md: "block" },
+            width: { sm: "100%", md: "45%" },
+            mb: { xs: 10, md: 10 },
+          }}
+        >
+          <img
+            src={process.env.PUBLIC_URL + "/images/welcome.jpg"}
+            alt="Welcome to our site"
+            style={{
+              width: "58%",
+              height: "auto",
+              borderRadius: "20px",
+              marginLeft: "15%",
+              marginBottom: "5%",
+            }}
+          />
+        </Box>
+
+        <Box
+          sx={{
+            width: { sm: "100%", md: "50%" },
+            mb: { xs: 3, md: 0 },
+          }}
+        >
+          <LoginForm
+            handleChange={handleChange}
+            handleFormSubmit={handleFormSubmit}
+            formState={formState}
+          />
+          {error && (
+            <Alert severity="error">
+              <AlertTitle>Error</AlertTitle>
+              {error.message}
+            </Alert>
+          )}
+        </Box>
+      </Box>
+    </Container>
   );
 };
 
-export default PaymentSuccessPage;
+export default Login;

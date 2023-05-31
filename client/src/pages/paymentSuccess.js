@@ -5,31 +5,50 @@ import { CheckCircleOutline as CheckCircleIcon } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@apollo/client";
 import { ADD_ORDER } from "../utils/mutations";
+import { idbPromise } from "../utils/helpers";
 
-const PaymentSuccessPage = ({ products }) => {
+const PaymentSuccessPage = () => {
   const navigate = useNavigate();
 
-  // useMutation hook returns a tuple that includes:
-  // - addOrder: Mutation function that we call to execute the mutation
-  // - data: If the mutation has been executed, this will contain the result
-  // - loading: Will be true while the mutation is in progress
-  // - error: Will contain any error that occurred when executing the mutation
   const [addOrder, { data, loading, error }] = useMutation(ADD_ORDER);
 
-  console.log("add order data", data);
-  console.log("loading", loading);
-  console.log("add order error", error);
-
   useEffect(() => {
-    if (products && products.length > 0) {
-      try {
-        // Execute the mutation, passing the products as a variable
-        addOrder({ variables: { products } });
-      } catch (error) {
-        console.error("Error adding order:", error);
+    async function saveOrder() {
+      // Get the cart data from IndexedDB
+      const cart = await idbPromise("cart", "get");
+
+      // Map over the items to get their _id values
+      const products = cart.map((item) => item._id);
+
+      console.log("Cart: ", cart); // data in the cart
+      console.log("Products: ", products); // product IDs
+
+      // If there are items in the cart, send the ADD_ORDER mutation
+      if (products.length) {
+        try {
+          const mutationResponse = await addOrder({ variables: { products } });
+          console.log("Mutation response: ", mutationResponse);
+          // Remove each product in the order from the cart in IndexedDB
+          products.forEach((item) => {
+            idbPromise("cart", "delete", item);
+          });
+        } catch (error) {
+          console.error("Error adding order:", error);
+        }
       }
+
+      // After a 10 seconds delay, redirect to the home page
+      setTimeout(() => {
+        navigate("/");
+      }, 10000);
     }
-  }, [products, addOrder]);
+
+    saveOrder();
+  }, [addOrder, navigate]);
+
+  console.log("Mutation data: ", data);
+  console.log("Loading state: ", loading);
+  console.log("Mutation error: ", error);
 
   return (
     <div
