@@ -16,7 +16,17 @@
     "password": "password02",
     "role": "user",
     "fullName": "User One",
-    "address": "456 User St, User City, US 90210",
+    "address": "2 Adelaide st,Adelaide,Australia 5000",
     "phone": "0987654321"
+  },
+  {
+    "_id": "60d6c6cfbab9340022da2a16",
+    "username": "User Two",
+    "email": "usertwo@veggiecrunch.com",
+    "password": "password03",
+    "role": "user",
+    "fullName": "User Two",
+    "address": "3 Adelaide st,Adelaide,Australia 5000",
+    "phone": "1029384756"
   }
 ]
