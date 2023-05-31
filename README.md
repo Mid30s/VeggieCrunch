@@ -40,7 +40,7 @@ npm install
 ## Usage
 
 To view this application,the following image shows the landing page of the application, or click on the page link that demonstrates the functionality of this project:\
-<>
+<https://salty-oasis-93295.herokuapp.com>
 
 ![E-Commerce](./client/public/images/homepage.png)
 
