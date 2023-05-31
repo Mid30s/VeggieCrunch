@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   IconButton,
   Badge,
@@ -6,12 +6,25 @@ import {
   List,
   ListItem,
   ListItemText,
+  Button,
+  ListItemSecondaryAction,
 } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import { getTotalPrice } from "../../utils/helpers"; // add your helper functions file path
+import CloseIcon from "@mui/icons-material/Close";
+import { getTotalPrice } from "../../utils/helpers";
+import { CartContext } from "../../utils/CartContext";
+import { UserContext } from "../../utils/UserContext";
+import { useNavigate } from "react-router-dom";
 
-const Cart = ({ cartItems }) => {
+const Cart = () => {
   const [anchorEl, setAnchorEl] = useState(null);
+
+  // Use the CartContext
+  const { cartItems, removeFromCart, updateQuantity } = useContext(CartContext);
+
+  // Use the UserContext
+  const { user } = useContext(UserContext);
+  const navigate = useNavigate();
 
   // Add this line to ensure cartItems is always an array before accessing its length property
   const cartItemCount = (cartItems ?? []).length;
@@ -22,6 +35,22 @@ const Cart = ({ cartItems }) => {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleRemove = (productId) => {
+    removeFromCart(productId);
+  };
+
+  const handleQuantityChange = (productId, quantity) => {
+    updateQuantity(productId, quantity);
+  };
+
+  const handleCheckout = () => {
+    if (!user) {
+      navigate("/login");
+    } else {
+      navigate("/checkout");
+    }
   };
 
   const open = Boolean(anchorEl);
@@ -51,16 +80,48 @@ const Cart = ({ cartItems }) => {
         <List>
           {(cartItems ?? []).map((item) => (
             <ListItem key={item.id}>
-              <ListItemText
-                primary={item.product}
-                secondary={`Quantity: ${item.quantity} Price: ${item.price}`}
+              <img
+                src={item.image}
+                alt={item.product}
+                style={{ width: "50px" }}
               />
+              <ListItemText
+                primary={item.name} // Assuming 'name' is the property for product name
+                secondary={`Quantity: ${item.quantity} Price: ${
+                  item.price * item.quantity
+                }`} // total price per product
+              />
+              <ListItemSecondaryAction>
+                <IconButton
+                  edge="end"
+                  aria-label="delete"
+                  onClick={() => handleRemove(item.id)}
+                >
+                  <CloseIcon />
+                </IconButton>
+                <input
+                  type="number"
+                  value={item.quantity}
+                  onChange={(e) =>
+                    handleQuantityChange(item.id, Number(e.target.value))
+                  }
+                />
+              </ListItemSecondaryAction>
             </ListItem>
           ))}
           <ListItem>
             <ListItemText
               primary={`Total: ${getTotalPrice(cartItems ?? [])}`}
             />
+          </ListItem>
+          <ListItem>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleCheckout}
+            >
+              Checkout
+            </Button>
           </ListItem>
         </List>
       </Popover>

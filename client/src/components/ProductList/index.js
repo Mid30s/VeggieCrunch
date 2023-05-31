@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 import { Link } from "react-router-dom";
 
 import { useQuery } from "@apollo/client";
 import { QUERY_PRODUCTS } from "../../utils/queries";
+import { CartContext } from "../../utils/CartContext";
+
 import {
   Grid,
   Card,
@@ -25,6 +27,8 @@ function ProductList({ selectedCategory, onSelectProduct }) {
   console.log("Products data:", productsData);
 
   const [filteredProducts, setFilteredProducts] = useState([]);
+
+  const { addToCart } = useContext(CartContext);
 
   useEffect(() => {
     if (productsData) {
@@ -105,7 +109,7 @@ function ProductList({ selectedCategory, onSelectProduct }) {
                   <Button
                     variant="contained"
                     color="primary"
-                    onClick={() => onSelectProduct(product._id)}
+                    onClick={() => addToCart(product)}
                   >
                     Add to Cart
                   </Button>
