@@ -1,7 +1,11 @@
 const { AuthenticationError } = require("apollo-server-express");
 const { User, Product, Order, Category } = require("../models");
 const { signToken } = require("../utils/auth");
-const stripe = require("stripe")("sk_test_4eC39HqLyjWDarjtT1zdp7dc");
+// const stripe = require("stripe")("sk_test_4eC39HqLyjWDarjtT1zdp7dc");
+
+const stripe = require("stripe")(
+  "sk_test_51NDfeeFp6VlKIMI2Doh9Sz6f7KyOMHUkoUv3hhvjRJODzaJGCqgM1qz2bdhGcPvhXnGmmej5ih41nHVisyMPP9aE00IOmqis8e"
+);
 
 const resolvers = {
   Query: {
@@ -99,39 +103,59 @@ const resolvers = {
 
     checkout: async (parent, args, context) => {
       const url = new URL(context.headers.referer).origin;
-      const order = new Order({ products: args.products });
-      const line_items = [];
+      console.log("args.products:", args.products);
 
-      const { products } = await order.populate("products");
-
-      for (let i = 0; i < products.length; i++) {
-        const product = await stripe.products.create({
-          name: products[i].name,
-          description: products[i].description,
-          images: [`${url}/images/${products[i].image}`],
-        });
-
-        const price = await stripe.prices.create({
-          product: product.id,
-          unit_amount: products[i].price * 100,
-          currency: "usd",
-        });
-
-        line_items.push({
-          price: price.id,
-          quantity: 1,
-        });
+      // Count product quantities based on product IDs in args.products
+      const productCounts = {};
+      for (const id of args.products) {
+        if (productCounts[id]) {
+          productCounts[id]++;
+        } else {
+          productCounts[id] = 1;
+        }
       }
 
-      const session = await stripe.checkout.sessions.create({
-        payment_method_types: ["card"],
-        line_items,
-        mode: "payment",
-        success_url: `${url}/success?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `${url}/`,
-      });
+      const line_items = [];
 
-      return { session: session.id };
+      for (const [id, quantity] of Object.entries(productCounts)) {
+        const product = await Product.findById(id);
+
+        const stripeProduct = await stripe.products.create({
+          name: product.name,
+          description: product.description,
+          images: [`${url}/images/${product.image}`],
+        });
+        console.log("stripeProduct:", stripeProduct);
+
+        const price = await stripe.prices.create({
+          product: stripeProduct.id,
+          unit_amount: product.price * 100,
+          currency: "usd",
+        });
+        console.log("price:", price);
+
+        console.log("Adding line item for product:", product);
+        line_items.push({
+          price: price.id,
+          quantity,
+        });
+        console.log("line_item:", line_items);
+      }
+
+      try {
+        console.log("Line items before session creation: ", line_items);
+        const session = await stripe.checkout.sessions.create({
+          payment_method_types: ["card"],
+          line_items,
+          mode: "payment",
+          success_url: `${url}/success?session_id={CHECKOUT_SESSION_ID}`,
+          cancel_url: `${url}/`,
+        });
+        console.log("Stripe session created: ", session);
+        return { session: session.id };
+      } catch (error) {
+        console.error("Error creating Stripe checkout session:", error);
+      }
     },
   },
 

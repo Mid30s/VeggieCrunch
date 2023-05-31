@@ -18,6 +18,7 @@ import Profile from "./pages/Profile";
 import Products from "./pages/Products";
 import Blog from "./pages/Blog";
 import SingleProduct from "./pages/singleProduct";
+import PageNotFound from "./pages/pageNotFound";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
@@ -66,6 +67,7 @@ function App() {
                 <Route path="/products" element={<Products />} />
                 <Route path="/blog" element={<Blog />} />
                 <Route path="/product/:id" element={<SingleProduct />} />
+                <Route path="*" element={<PageNotFound />} />
               </Routes>
             </div>
             <Footer />

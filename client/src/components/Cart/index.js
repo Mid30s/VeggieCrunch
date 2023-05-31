@@ -1,4 +1,6 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
+import { useLazyQuery } from "@apollo/client";
+import { QUERY_CHECKOUT } from "../../utils/queries";
 import {
   IconButton,
   Badge,
@@ -18,6 +20,11 @@ import { UserContext } from "../../utils/UserContext";
 import { useNavigate } from "react-router-dom";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
+import { loadStripe } from "@stripe/stripe-js";
+const stripePromise = loadStripe(
+  "pk_test_51NDfeeFp6VlKIMI2xWmhCBFGf5y4OiVy5e9eOFVKWHvXPHxLkQChvZIS0MdPWZ7zzmM8CuyJM4Cp0FcK2mZKm1Ke002fWlJZXO"
+);
+// const stripePromise = loadStripe("pk_test_TYooMQauvdEDq54NiTphI7jx");
 
 const Cart = () => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -34,6 +41,29 @@ const Cart = () => {
 
   //handling the open state of the Snackbar
   const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [getCheckout, { data, error }] = useLazyQuery(QUERY_CHECKOUT);
+
+  useEffect(() => {
+    if (error) {
+      console.log("Checkout query error:", error);
+      return;
+    }
+
+    if (data) {
+      console.log("Checkout query data:", data);
+      (async () => {
+        const stripe = await stripePromise;
+        const { session } = data.checkout;
+        const result = await stripe.redirectToCheckout({
+          sessionId: session,
+        });
+        console.log("Stripe redirectToCheckout result", result);
+        if (result.error) {
+          console.error(result.error.message);
+        }
+      })();
+    }
+  }, [data, error]);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -54,15 +84,27 @@ const Cart = () => {
     updateQuantity(productId, quantity);
   };
 
-  const handleCheckout = () => {
+  const handleCheckout = async () => {
+    console.log("Starting Checkout process");
     if (!user) {
-      setOpenSnackbar(true); // Open the snackbar
+      console.log("User not logged in");
+      setOpenSnackbar(true); // Open the Snackbar
       setTimeout(() => {
-        setOpenSnackbar(false); // Close the snackbar after 2 seconds
+        setOpenSnackbar(false); // Close the Snackbar after 2 seconds
         navigate("/login"); // Redirect to login page after 2 seconds
       }, 2000);
     } else {
-      navigate("/checkout");
+      console.log("User is logged in");
+      let productIds = [];
+      cartItems.forEach((item) => {
+        for (let i = 0; i < item.quantity; i++) {
+          productIds.push(item._id);
+        }
+      });
+
+      console.log("Product IDs: ", productIds);
+      getCheckout({ variables: { products: productIds } });
+      console.log("Checkout query executed");
     }
   };
 

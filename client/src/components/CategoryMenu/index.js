@@ -22,8 +22,8 @@ function CategoryMenu({ selectedCategory, onSelectCategory }) {
           <ListItemText primary="All Products" />
         </ListItemButton>
       </ListItem>
-      {categoryData.categories.map(({ id, name }) => (
-        <ListItem key={id}>
+      {categoryData.categories.map(({ id, name }, index) => (
+        <ListItem key={id || index}>
           <ListItemButton
             selected={selectedCategory === name}
             onClick={() => onSelectCategory(name)}
