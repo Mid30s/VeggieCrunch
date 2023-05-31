@@ -1,25 +1,5 @@
 import { gql } from "@apollo/client";
 
-// export const QUERY_USER = gql`
-//   query user($username: String!) {
-//     user(username: $username) {
-//       _id
-//       username
-//       email
-//     }
-//   }
-// `;
-
-// export const QUERY_ME = gql`
-//   query me {
-//     me {
-//       _id
-//       username
-//       email
-//     }
-//   }
-// `;
-
 export const GET_USER = gql`
   query GetUser($userId: ID!) {
     user(_id: $userId) {
@@ -86,6 +66,54 @@ export const QUERY_CHECKOUT = gql`
   query getCheckout($products: [ID]!) {
     checkout(products: $products) {
       session
+    }
+  }
+`;
+
+export const QUERY_ORDERS = gql`
+  query Orders($userId: ID!) {
+    orders(userId: $userId) {
+      _id
+      total
+      products {
+        product {
+          _id
+          name
+          price
+        }
+        quantity
+      }
+    }
+  }
+`;
+
+export const USER_QUERY = gql`
+  query User($id: ID!) {
+    user(_id: $id) {
+      _id
+      username
+      email
+      orders {
+        _id
+        status
+        purchaseDate
+        products {
+          quantity
+          product {
+            description
+            image
+            inStock
+            name
+            organic
+            price
+            quantity
+          }
+        }
+      }
+      role
+      fullName
+      address
+      phone
     }
   }
 `;

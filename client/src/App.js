@@ -21,6 +21,7 @@ import SingleProduct from "./pages/singleProduct";
 import PageNotFound from "./pages/pageNotFound";
 import PaymentSuccessPage from "./pages/paymentSuccess";
 import AccountPage from "./pages/Account";
+import UserDashboard from "./pages/userDashboard";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
@@ -71,6 +72,7 @@ function App() {
                 <Route path="/product/:id" element={<SingleProduct />} />
                 <Route path="/success" element={<PaymentSuccessPage />} />
                 <Route path="/account" element={<AccountPage />} />
+                <Route path="/user/dashboard" element={<UserDashboard />} />
                 <Route path="*" element={<PageNotFound />} />
               </Routes>
             </div>

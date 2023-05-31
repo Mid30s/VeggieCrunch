@@ -7,7 +7,7 @@ export function getTotalPrice(cartItems) {
 
 export function idbPromise(storeName, method, object) {
   return new Promise((resolve, reject) => {
-    const request = window.indexedDB.open("shop-shop", 1);
+    const request = window.indexedDB.open("veggie-crunch", 1);
     let db, tx, store;
     request.onupgradeneeded = function (e) {
       const db = request.result;
@@ -31,8 +31,22 @@ export function idbPromise(storeName, method, object) {
 
       switch (method) {
         case "put":
-          store.put(object);
-          resolve(object);
+          if (Array.isArray(object)) {
+            object.forEach((item) => {
+              if (item && item._id) {
+                store.put(item);
+              }
+            });
+            resolve(object);
+          } else if (object && object._id) {
+            store.put(object);
+            resolve(object);
+          } else {
+            console.error(
+              "Attempted to put invalid object into the database:",
+              object
+            );
+          }
           break;
         case "get":
           const all = store.getAll();

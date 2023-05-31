@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import CloseIcon from "@mui/icons-material/Close";
-import { getTotalPrice } from "../../utils/helpers";
+import { getTotalPrice, idbPromise } from "../../utils/helpers";
 import { CartContext } from "../../utils/CartContext";
 import { UserContext } from "../../utils/UserContext";
 import { useNavigate } from "react-router-dom";
@@ -24,7 +24,6 @@ import { loadStripe } from "@stripe/stripe-js";
 const stripePromise = loadStripe(
   "pk_test_51NDfeeFp6VlKIMI2xWmhCBFGf5y4OiVy5e9eOFVKWHvXPHxLkQChvZIS0MdPWZ7zzmM8CuyJM4Cp0FcK2mZKm1Ke002fWlJZXO"
 );
-// const stripePromise = loadStripe("pk_test_TYooMQauvdEDq54NiTphI7jx");
 
 const Cart = () => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -44,6 +43,9 @@ const Cart = () => {
   const [getCheckout, { data, error }] = useLazyQuery(QUERY_CHECKOUT);
 
   useEffect(() => {
+    // Save the cart items to IndexedDB whenever they change
+    idbPromise("cart", "put", cartItems);
+
     if (error) {
       console.log("Checkout query error:", error);
       return;
@@ -63,7 +65,7 @@ const Cart = () => {
         }
       })();
     }
-  }, [data, error]);
+  }, [data, error, cartItems]);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
