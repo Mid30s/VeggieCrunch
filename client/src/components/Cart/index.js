@@ -7,7 +7,8 @@ import {
   ListItem,
   ListItemText,
   Button,
-  ListItemSecondaryAction,
+  Grid,
+  Typography,
 } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import CloseIcon from "@mui/icons-material/Close";
@@ -42,6 +43,9 @@ const Cart = () => {
   };
 
   const handleQuantityChange = (productId, quantity) => {
+    console.log(
+      `handleQuantityChange called with productId ${productId} and quantity ${quantity}`
+    );
     updateQuantity(productId, quantity);
   };
 
@@ -78,35 +82,46 @@ const Cart = () => {
         }}
       >
         <List>
+          {console.log("Rendering cart items:", cartItems)}
           {(cartItems ?? []).map((item) => (
-            <ListItem key={item.id}>
+            <ListItem key={item._id}>
               <img
                 src={item.image}
                 alt={item.product}
-                style={{ width: "50px" }}
+                style={{ width: "100px", marginLeft: "15px" }}
               />
-              <ListItemText
-                primary={item.name} // Assuming 'name' is the property for product name
-                secondary={`Quantity: ${item.quantity} Price: ${
-                  item.price * item.quantity
-                }`} // total price per product
-              />
-              <ListItemSecondaryAction>
-                <IconButton
-                  edge="end"
-                  aria-label="delete"
-                  onClick={() => handleRemove(item.id)}
-                >
-                  <CloseIcon />
-                </IconButton>
-                <input
-                  type="number"
-                  value={item.quantity}
-                  onChange={(e) =>
-                    handleQuantityChange(item.id, Number(e.target.value))
-                  }
-                />
-              </ListItemSecondaryAction>
+              <Grid container alignItems="center">
+                <Grid item xs>
+                  <ListItemText>
+                    <Typography variant="h6" component="div">
+                      {item.name}
+                    </Typography>
+                    <Typography variant="body1" component="div">
+                      Quantity: {item.quantity}
+                    </Typography>
+                    <Typography variant="body1" component="div">
+                      Price: {(item.price * item.quantity).toFixed(2)}
+                    </Typography>
+                  </ListItemText>
+                </Grid>
+                <Grid item>
+                  <input
+                    type="number"
+                    value={item.quantity}
+                    style={{ width: "50px", marginLeft: "15px" }}
+                    onChange={(e) =>
+                      handleQuantityChange(item._id, parseInt(e.target.value))
+                    }
+                  />
+                  <IconButton
+                    edge="end"
+                    aria-label="delete"
+                    onClick={() => handleRemove(item._id)}
+                  >
+                    <CloseIcon />
+                  </IconButton>
+                </Grid>
+              </Grid>
             </ListItem>
           ))}
           <ListItem>
