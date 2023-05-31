@@ -246,29 +246,42 @@ const resolvers = {
         throw new AuthenticationError("You need to be logged in!");
       }
 
-      // Create a new order
-      const order = new Order({
-        products,
-        userId: context.user._id,
-        purchaseDate: new Date(),
-      });
+      console.log("User authenticated, creating new order...");
 
-      // Save the order to the database
-      const savedOrder = await order.save();
+      try {
+        // Create a new order
+        const order = new Order({
+          products,
+          userId: context.user._id,
+          purchaseDate: new Date(),
+        });
 
-      // Populate the product details
-      await Order.populate(savedOrder, { path: "products.product" });
+        // Save the order to the database
+        const savedOrder = await order.save();
 
-      // Link the order to the user
-      const user = await User.findById(context.user._id);
-      if (!user) {
-        throw new Error("User not found");
+        console.log("Order created, saving to database...");
+
+        // Populate the product details
+        await Order.populate(savedOrder, { path: "products.product" });
+
+        console.log("Product details populated, linking order to user...");
+
+        // Link the order to the user
+        const user = await User.findById(context.user._id);
+        if (!user) {
+          throw new Error("User not found");
+        }
+        user.orders.push(savedOrder);
+        await user.save();
+
+        console.log("Order linked to user, returning saved order...");
+
+        // Return the order
+        return savedOrder;
+      } catch (error) {
+        console.error("Error occurred while adding order: ", error);
+        throw error;
       }
-      user.orders.push(savedOrder);
-      await user.save();
-
-      // Return the order
-      return savedOrder;
     },
 
     deleteProduct: async (parent, { _id }, context) => {

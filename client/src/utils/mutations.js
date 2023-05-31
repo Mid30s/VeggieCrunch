@@ -49,3 +49,20 @@ export const UPDATE_USER = gql`
     }
   }
 `;
+
+export const ADD_ORDER = gql`
+  mutation AddOrder($products: [ProductOrderInput]!) {
+    addOrder(products: $products) {
+      _id
+      purchaseDate
+      products {
+        product {
+          _id
+          name
+        }
+        quantity
+      }
+      status
+    }
+  }
+`;

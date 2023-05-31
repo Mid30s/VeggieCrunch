@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
-import { Typography, Button } from "@mui/material";
+import { Typography, Button, Rating } from "@mui/material";
 import { CheckCircleOutline as CheckCircleIcon } from "@mui/icons-material";
-import { Rating } from "@mui/lab";
+
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@apollo/client";
 import { ADD_ORDER } from "../utils/mutations";
@@ -15,6 +15,10 @@ const PaymentSuccessPage = ({ products }) => {
   // - loading: Will be true while the mutation is in progress
   // - error: Will contain any error that occurred when executing the mutation
   const [addOrder, { data, loading, error }] = useMutation(ADD_ORDER);
+
+  console.log("add order data", data);
+  console.log("loading", loading);
+  console.log("add order error", error);
 
   useEffect(() => {
     if (products && products.length > 0) {
