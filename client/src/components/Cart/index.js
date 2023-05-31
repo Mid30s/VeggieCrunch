@@ -21,9 +21,11 @@ import { useNavigate } from "react-router-dom";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import { loadStripe } from "@stripe/stripe-js";
-const stripePromise = loadStripe(
-  "pk_test_51NDfeeFp6VlKIMI2xWmhCBFGf5y4OiVy5e9eOFVKWHvXPHxLkQChvZIS0MdPWZ7zzmM8CuyJM4Cp0FcK2mZKm1Ke002fWlJZXO"
-);
+const stripePromise = loadStripe(process.env.REACT_APP_SECRET_KEY);
+
+// const stripePromise = loadStripe(
+//   "pk_test_51NDfeeFp6VlKIMI2xWmhCBFGf5y4OiVy5e9eOFVKWHvXPHxLkQChvZIS0MdPWZ7zzmM8CuyJM4Cp0FcK2mZKm1Ke002fWlJZXO"
+// );
 
 const Cart = () => {
   const [anchorEl, setAnchorEl] = useState(null);

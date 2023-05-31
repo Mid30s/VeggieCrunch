@@ -2,17 +2,17 @@
   {
     "_id": "60d6c6cfbab9340022da2a14",
     "username": "Brian Kernighan",
-    "email": "bkernighan@techfriends.dev",
+    "email": "admin@veggiecrunch.com",
     "password": "password01",
     "role": "admin",
     "fullName": "Brian W. Kernighan",
-    "address": "123 Tech St, Computer City, CS 90210",
+    "address": "1 Adelaide st,Adelaide,Australia 5000",
     "phone": "1234567890"
   },
   {
     "_id": "60d6c6cfbab9340022da2a15",
     "username": "User One",
-    "email": "userone@techfriends.dev",
+    "email": "userone@veggiecrunch.com",
     "password": "password02",
     "role": "user",
     "fullName": "User One",
