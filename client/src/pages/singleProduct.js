@@ -4,6 +4,7 @@ import { QUERY_PRODUCT } from "../utils/queries";
 import { useParams } from "react-router-dom";
 import { Box, CircularProgress, Container } from "@mui/material";
 import ProductDetails from "../components/ProductDetails";
+import Cart from "../components/Cart";
 
 const SingleProduct = () => {
   const { id } = useParams();
@@ -52,6 +53,16 @@ const SingleProduct = () => {
         }}
       >
         <ProductDetails product={product} />;
+        <Box
+          sx={{
+            position: "absolute",
+            top: 60,
+            right: 10,
+            zIndex: 9999, // On top of other elements
+          }}
+        >
+          <Cart />
+        </Box>
       </Box>
     </Container>
   );

@@ -16,6 +16,8 @@ import { getTotalPrice } from "../../utils/helpers";
 import { CartContext } from "../../utils/CartContext";
 import { UserContext } from "../../utils/UserContext";
 import { useNavigate } from "react-router-dom";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 
 const Cart = () => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -29,6 +31,9 @@ const Cart = () => {
 
   // Add this line to ensure cartItems is always an array before accessing its length property
   const cartItemCount = (cartItems ?? []).length;
+
+  //handling the open state of the Snackbar
+  const [openSnackbar, setOpenSnackbar] = useState(false);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -51,7 +56,11 @@ const Cart = () => {
 
   const handleCheckout = () => {
     if (!user) {
-      navigate("/login");
+      setOpenSnackbar(true); // Open the snackbar
+      setTimeout(() => {
+        setOpenSnackbar(false); // Close the snackbar after 2 seconds
+        navigate("/login"); // Redirect to login page after 2 seconds
+      }, 2000);
     } else {
       navigate("/checkout");
     }
@@ -86,9 +95,12 @@ const Cart = () => {
           {(cartItems ?? []).map((item) => (
             <ListItem key={item._id}>
               <img
-                src={item.image}
+                src={`/images/${item.image.substring(7)}`}
                 alt={item.product}
-                style={{ width: "100px", marginLeft: "15px" }}
+                style={{
+                  width: "100px",
+                  paddingRight: "10px",
+                }}
               />
               <Grid container alignItems="center">
                 <Grid item xs>
@@ -140,6 +152,20 @@ const Cart = () => {
           </ListItem>
         </List>
       </Popover>
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={2000}
+        onClose={() => setOpenSnackbar(false)}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert
+          onClose={() => setOpenSnackbar(false)}
+          severity="info"
+          sx={{ width: "100%" }}
+        >
+          You need to login first!
+        </Alert>
+      </Snackbar>
     </div>
   );
 };
