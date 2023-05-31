@@ -57,7 +57,7 @@ const UserDashboard = () => {
               0
             );
             return (
-              <Box key={order._id} mb={3}>
+              <Box key={order._id} mb={2}>
                 <Paper>
                   <Box p={3}>
                     <Grid
