@@ -58,7 +58,7 @@ function LoginForm({ handleChange, handleFormSubmit, formState }) {
 
       <Box sx={{ display: "flex", justifyContent: "center", m: 2 }}>
         <GoogleLogin
-          clientId="YOUR_CLIENT_ID"
+          clientId="467009784034-e9eg8cun16d8kkchljnpgb67j870852l.apps.googleusercontent.com"
           buttonText="Login with Google"
           onSuccess={responseGoogle}
           onFailure={responseGoogle}
