@@ -25,8 +25,8 @@ const HomePage = () => {
         textAlign: "center",
       }}
     >
-      <Typography variant="h3" gutterBottom>
-        The best place to buy fresh veggies
+      <Typography variant="h2" gutterBottom fontWeight="bold">
+        Welcome to Veggie Crunch
       </Typography>
 
       <Typography variant="h5" gutterBottom>
